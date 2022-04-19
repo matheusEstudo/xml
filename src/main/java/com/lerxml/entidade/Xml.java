@@ -7,26 +7,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import lombok.*;
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
 public class Xml {
 
     private String conteudoArquivo = "";
-    
-    
 
     public void AbrirArquivo(File arquivo) throws FileNotFoundException, IOException {
-        BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo));
-
-        while (lerArquivo.ready()) {
-            String linha = lerArquivo.readLine();
-            conteudoArquivo += linha;
+        try (BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo))) {
+            while (lerArquivo.ready()) {
+                String linha = lerArquivo.readLine();
+                setConteudoArquivo(getConteudoArquivo() + "\n" + linha);
+            }
         }
-        lerArquivo.close();
-        
-        System.out.println(getConteudoArquivo());
 
     }
 
