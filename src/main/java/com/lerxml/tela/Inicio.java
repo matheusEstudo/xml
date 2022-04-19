@@ -5,7 +5,11 @@
  */
 package com.lerxml.tela;
 
+import com.lerxml.entidade.Xml;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /**
@@ -71,7 +75,15 @@ public class Inicio extends javax.swing.JFrame {
         JFileChooser gernciadorArquivo = new JFileChooser();
         gernciadorArquivo.showOpenDialog(null);
         File arquivo = gernciadorArquivo.getSelectedFile();
+
         System.out.println(arquivo);
+
+        Xml xml = new Xml();
+        try {
+            xml.AbrirArquivo(arquivo);
+        } catch (IOException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btAbrirActionPerformed
 
     /**
