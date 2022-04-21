@@ -13,9 +13,10 @@ import lombok.*;
 public class Xml {
 
     private String conteudoArquivo = "";
+    private String conteudoAlterado = "";
 
     public void AbrirArquivo(File arquivo) throws FileNotFoundException, IOException {
-        try ( BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo))) {
+        try (BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo))) {
             while (lerArquivo.ready()) {
                 String linha = lerArquivo.readLine();
                 setConteudoArquivo(getConteudoArquivo() + "\n" + linha);
@@ -25,7 +26,7 @@ public class Xml {
     }
 
     public void modificarArquivo() {
-        
+        conteudoArquivo.indexOf(conteudoArquivo);
     }
 
 }

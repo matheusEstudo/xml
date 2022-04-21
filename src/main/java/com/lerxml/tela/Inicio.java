@@ -5,12 +5,14 @@
  */
 package com.lerxml.tela;
 
+import com.lerxml.controle.Funcoes;
 import com.lerxml.entidade.Xml;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,9 +20,10 @@ import javax.swing.JFileChooser;
  */
 public class Inicio extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Inicio
-     */
+    private String ramal = null;
+    private String senha = null;
+    private Xml xml = null;
+
     public Inicio() {
         initComponents();
     }
@@ -44,6 +47,7 @@ public class Inicio extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         varSenha = new javax.swing.JPasswordField();
+        varRamal = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("XML");
@@ -86,6 +90,8 @@ public class Inicio extends javax.swing.JFrame {
 
         jLabel2.setText("Senha:");
 
+        varRamal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("########"))));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,7 +111,9 @@ public class Inicio extends javax.swing.JFrame {
                             .addComponent(btSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(109, 109, 109)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(varRamal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(varSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -131,7 +139,8 @@ public class Inicio extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(varSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(varSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(varRamal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -143,8 +152,8 @@ public class Inicio extends javax.swing.JFrame {
         JFileChooser gernciadorArquivo = new JFileChooser();
         gernciadorArquivo.showOpenDialog(null);
         File arquivo = gernciadorArquivo.getSelectedFile();
-        
-        Xml xml = new Xml();
+
+        xml = new Xml();
         try {
             xml.AbrirArquivo(arquivo);
             lbTexto.setText(xml.getConteudoArquivo());
@@ -155,17 +164,45 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btAbrirActionPerformed
 
     private void btModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btModificarActionPerformed
-        // TODO add your handling code here:
+        ramal = varRamal.getText().trim();
+        senha = String.valueOf(varSenha.getPassword()).trim();
+
+        if (xml == null) {
+            JOptionPane.showMessageDialog(null, "não tem nenhum arquivo para ser alterado");
+
+        } else if (validarFormulario(ramal, senha)) {
+            JOptionPane.showMessageDialog(null, "sucesso");
+        }
     }//GEN-LAST:event_btModificarActionPerformed
 
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        lbTexto.setText("");
-        lbCaminho.setText("");
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
+    private void limpar() {
+        lbTexto.setText("");
+        lbCaminho.setText("");
+    }
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btSalvarActionPerformed
+
+    private boolean validarFormulario(String ramal, String senha) {
+        if (ramal == null) {
+            JOptionPane.showMessageDialog(null, "Ramal não pode estar sem valor");
+            return false;
+        } else if (!Funcoes.validarStr(ramal)) {
+            JOptionPane.showMessageDialog(null, "Ramal tem que ser mais que 3 caracteres");
+            return false;
+        } else if (senha == null) {
+            JOptionPane.showMessageDialog(null, "Senha não pode estar sem valor");
+            return false;
+        } else if (!Funcoes.validarStr(senha)) {
+            JOptionPane.showMessageDialog(null, "Senha tem que ser mais que 3 caracteres");
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @param args the command line arguments
@@ -212,6 +249,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbCaminho;
     private javax.swing.JTextArea lbTexto;
+    private javax.swing.JFormattedTextField varRamal;
     private javax.swing.JPasswordField varSenha;
     // End of variables declaration//GEN-END:variables
 
